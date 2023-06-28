@@ -5,7 +5,7 @@ from . views import *
 
 # Routers provide an easy way of automatically determining the URL conf.
 router = routers.DefaultRouter()
-router.register(r'search-bus', BusView)
+router.register(r'buses', BusView)
 router.register(r'seats', SeatsView)
 router.register(r'make_booking', TicketsView)
 router.register(r'get-booking-infos', GetBookingInfos)
