@@ -1,5 +1,5 @@
 asgiref
-astroid==2.15.5
+astroid
 autopep8==2.0.2
 certifi==2023.5.7
 cffi==1.15.1
