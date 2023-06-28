@@ -34,8 +34,8 @@ class SeatsSerializers(serializers.ModelSerializer):
 
 
 class BookingSerializers(serializers.ModelSerializer):
-    bus = BusInfosSerializers()
-    seat = SeatsSerializers()
+    # bus = BusInfosSerializers()
+    # seat = SeatsSerializers()
 
     class Meta:
         model = BookingTable

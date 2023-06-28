@@ -33,7 +33,9 @@ class BusView(viewsets.ModelViewSet):
                 "success": True,
                 'status_code': status.HTTP_200_OK,
                 "message": "Found",
-                'data': serializer.data
+                "data": {
+                    'buses': serializer.data
+                }
             }
             return Response(data=response_obj)
         else:
@@ -42,7 +44,9 @@ class BusView(viewsets.ModelViewSet):
                 "success": False,
                 'status_code': status.HTTP_404_NOT_FOUND,
                 "message": "Not Found",
-                'data': serializer.data
+                "data": {
+                    'errors_massage': serializer.data
+                }
             }
             return Response(data=response_obj)
 
@@ -56,7 +60,7 @@ class SeatsView(viewsets.ModelViewSet):
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
 
-        _bus_id = request.query_params.get('bus', None)
+        _bus_id = request.query_params.get('bus_id', None)
 
         if _bus_id:
             queryset = queryset.filter(bus=_bus_id)
@@ -69,7 +73,9 @@ class SeatsView(viewsets.ModelViewSet):
                 "success": True,
                 'status_code': status.HTTP_200_OK,
                 "message": "Found",
-                'data': serializer.data
+                "data": {
+                    'seats': serializer.data
+                }
             }
             return Response(data=response_obj)
         else:
@@ -78,7 +84,9 @@ class SeatsView(viewsets.ModelViewSet):
                 "success": False,
                 'status_code': status.HTTP_404_NOT_FOUND,
                 "message": "Not Found",
-                'data': serializer.data
+                "data": {
+                    'error_messages': serializer.data
+                }
             }
             return Response(data=response_obj)
 
@@ -101,7 +109,9 @@ class SeatsView(viewsets.ModelViewSet):
                 "success": True,
                 "status": status.HTTP_200_OK,
                 "message": "Record updated successfully",
-                "data": serializer.data
+                "data": {
+                    'selected_seat_infos': serializer.data
+                }
             }
             return Response(response_obj)
         else:
@@ -136,7 +146,9 @@ class GetBookingInfos(viewsets.ModelViewSet):
                 "success": True,
                 'status_code': status.HTTP_200_OK,
                 "message": "Found",
-                'data': serializer.data
+                "data": {
+                    'booking_info': serializer.data
+                }
             }
             return Response(data=response_obj)
         else:
@@ -145,7 +157,9 @@ class GetBookingInfos(viewsets.ModelViewSet):
                 "success": False,
                 'status_code': status.HTTP_404_NOT_FOUND,
                 "message": "Not Found",
-                'data': serializer.data
+                "data": {
+                    'message': serializer.data
+                }
             }
             return Response(data=response_obj)
 
@@ -173,7 +187,9 @@ class TicketsView(viewsets.ModelViewSet):
                 "success": True,
                 'status_code': status.HTTP_200_OK,
                 "message": "Found",
-                'data': serializer.data
+                'data': {
+                    'booking_infos': serializer.data
+                }
             }
             return Response(data=response_obj)
         else:
@@ -182,7 +198,9 @@ class TicketsView(viewsets.ModelViewSet):
                 "success": False,
                 'status_code': status.HTTP_404_NOT_FOUND,
                 "message": "Not Found",
-                'data': serializer.data
+                'data': {
+                    'booking_infos': serializer.data
+                }
             }
             return Response(data=response_obj)
 
@@ -217,7 +235,9 @@ class TicketsView(viewsets.ModelViewSet):
             "status": status.HTTP_200_OK,
             "message": "Booking is made successfully",
             'headers': headers,
-            "data": serializer.data
+            "data": {
+                'booking_info': serializer.data
+            }
         }
         return Response(response_obj)
 
@@ -245,7 +265,9 @@ class PickUpPointsView(viewsets.ModelViewSet):
                 "success": True,
                 'status_code': status.HTTP_200_OK,
                 "message": "Found",
-                'data': serializer.data
+                "data": {
+                    'drop_points': serializer.data
+                }
             }
             return Response(data=response_obj)
         else:
@@ -254,7 +276,9 @@ class PickUpPointsView(viewsets.ModelViewSet):
                 "success": False,
                 'status_code': status.HTTP_404_NOT_FOUND,
                 "message": "Not Found",
-                'data': serializer.data
+                "data": {
+                    'error_message': serializer.data
+                }
             }
             return Response(data=response_obj)
 
@@ -282,7 +306,9 @@ class DropPointsView(viewsets.ModelViewSet):
                 "success": True,
                 'status_code': status.HTTP_200_OK,
                 "message": "Found",
-                'data': serializer.data
+                "data": {
+                    'pick_up_points': serializer.data
+                }
             }
             return Response(data=response_obj)
         else:
@@ -291,6 +317,8 @@ class DropPointsView(viewsets.ModelViewSet):
                 "success": False,
                 'status_code': status.HTTP_404_NOT_FOUND,
                 "message": "Not Found",
-                'data': serializer.data
+                "data": {
+                    'error_message': serializer.data
+                }
             }
             return Response(data=response_obj)
