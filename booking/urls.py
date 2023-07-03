@@ -11,6 +11,9 @@ router.register(r'make_booking', TicketsView)
 router.register(r'get-booking-infos', GetBookingInfos)
 router.register(r'get-pickup-points', PickUpPointsView)
 router.register(r'get-drop-points', DropPointsView)
+router.register(r'get-route-destionation-point', RouteDestinationView)
+router.register(r'get-route-origin-point', RouteOriginView)
+router.register(r'booking-state', BookingStateView)
 
 
 urlpatterns = [

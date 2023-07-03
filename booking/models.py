@@ -2,25 +2,6 @@ from django.db import models
 from django.utils import timezone
 import os
 
-class BookingState(models.Model):
-    BOOKING_STATE = (
-        (0, 'BOOKED'),
-       (1,'CONFORMED'),
-        (2, 'CANCELLED')
-
-    )
-
-    booking = models.ForeignKey('BookingTable', on_delete=models.CASCADE, related_name='booking_state')
-
-    state = models.CharField(choices=BOOKING_STATE , default=1)
-
-    class Meta:
-        verbose_name = '1. Booking state'
-        verbose_name_plural = verbose_name
-
-    def __str__(self):
-        return f'{self.booking.booked_by, } => on state of {self.state} '
-
 
 class RouteOriginTable(models.Model):
     name = models.CharField(max_length=50, null=True)
@@ -110,7 +91,26 @@ class BookingTable(models.Model):
         verbose_name_plural = verbose_name
 
     def __str__(self):
-        return f'{self. booked_by} bus {self.bus.bus_name}  => seat number {self.seat.seat_number}'
+        return f'{self.booked_by} bus {self.bus.bus_name}  => seat number {self.seat.seat_number}'
+
+
+class BookingStateTable(models.Model):
+    BOOKING_STATE = (
+        ('BOOKED', 'BOOKED'),
+        ('CONFIRMED', 'CONFIRMED'),
+        ('CANCELED', 'CANCELLED')
+    )
+
+    booking = models.ForeignKey(BookingTable, on_delete=models.CASCADE)
+
+    state = models.CharField(choices=BOOKING_STATE, default=0)
+
+    class Meta:
+        verbose_name = '1. Booking state'
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return f'{self.booking.booked_by, } => on state of {self.state}'
 
 
 class PickUpsTable(models.Model):

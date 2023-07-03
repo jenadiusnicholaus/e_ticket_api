@@ -34,8 +34,6 @@ class SeatsSerializers(serializers.ModelSerializer):
 
 
 class BookingSerializers(serializers.ModelSerializer):
-    # bus = BusInfosSerializers()
-    # seat = SeatsSerializers()
 
     class Meta:
         model = BookingTable
@@ -62,4 +60,19 @@ class DropPointsSerializers(serializers.ModelSerializer):
 
     class Meta:
         model = DropsTable
+        fields = '__all__'
+
+
+class BookingStateSerializers(serializers.ModelSerializer):
+    booking = GetBookingSerializers()
+
+    class Meta:
+        model = BookingStateTable
+        fields = '__all__'
+
+
+class PostBookingStateSerializers(serializers.ModelSerializer):
+
+    class Meta:
+        model = BookingStateTable
         fields = '__all__'

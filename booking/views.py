@@ -5,6 +5,139 @@ from rest_framework.response import Response
 from rest_framework import viewsets, status
 
 
+class BookingStateView(viewsets.ModelViewSet):
+    queryset = BookingStateTable.objects.all()
+    serializer_class = BookingStateSerializers
+    authentication_classes = []
+    permission_classes = []
+
+    def list(self, request, *args, **kwargs):
+
+        queryset = self.filter_queryset(self.get_queryset())
+        _booking_id = request.query_params.get('booking_id', None)
+
+        try:
+            q = BookingStateTable.objects.get(booking_id=_booking_id)
+            serializer = self.get_serializer(q)
+
+            response_obj = {
+                "success": True,
+                'status_code': status.HTTP_200_OK,
+                "message": "Found",
+                "data": {
+                    'booking_state':  serializer.data
+                }
+            }
+            return Response(data=response_obj)
+        except:
+
+            response_obj = {
+                "success": False,
+                'status_code': status.HTTP_404_NOT_FOUND,
+                "message": "Not Found",
+
+            }
+            return Response(data=response_obj)
+
+    def put(self, request, *args, **kwargs):
+
+        booking_id = request.query_params.get('booking_id')
+
+        _state = request.query_params.get('state')
+
+        instance = self.get_queryset().get(booking__id=booking_id,)
+        data = {
+            'state': _state,
+        }
+        serializer = self.get_serializer(instance, data=data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        if serializer.is_valid():
+            serializer.save()
+            response_obj = {
+                "success": True,
+                "status": status.HTTP_200_OK,
+                "message": "Record updated successfully",
+                "data": {
+                    'state': serializer.data
+                }
+            }
+            return Response(response_obj)
+        else:
+            response_obj = {
+                "success": False,
+                "status": status.HTTP_400_BAD_REQUEST,
+                "message": "Failed to update"
+            }
+            Response(response_obj)
+
+
+class RouteOriginView(viewsets.ModelViewSet):
+
+    queryset = RouteOriginTable.objects.all()
+    serializer_class = RouteOriginSerializers
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+
+        serializer = self.get_serializer(queryset, many=True)
+
+        if queryset.exists():
+
+            response_obj = {
+                "success": True,
+                'status_code': status.HTTP_200_OK,
+                "message": "Found",
+                "data": {
+                    'buses': serializer.data
+                }
+            }
+            return Response(data=response_obj)
+        else:
+
+            response_obj = {
+                "success": False,
+                'status_code': status.HTTP_404_NOT_FOUND,
+                "message": "Not Found",
+                "data": {
+                    'errors_massage': serializer.data
+                }
+            }
+            return Response(data=response_obj)
+
+
+class RouteDestinationView(viewsets.ModelViewSet):
+    queryset = RouteDestinationTable.objects.all()
+    serializer_class = RouteDestinationSerializers
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+
+        serializer = self.get_serializer(queryset, many=True)
+
+        if queryset.exists():
+
+            response_obj = {
+                "success": True,
+                'status_code': status.HTTP_200_OK,
+                "message": "Found",
+                "data": {
+                    'buses': serializer.data
+                }
+            }
+            return Response(data=response_obj)
+        else:
+
+            response_obj = {
+                "success": False,
+                'status_code': status.HTTP_404_NOT_FOUND,
+                "message": "Not Found",
+                "data": {
+                    'errors_massage': serializer.data
+                }
+            }
+            return Response(data=response_obj)
+
+
 class BusView(viewsets.ModelViewSet):
     queryset = BusInfosTable.objects.all()
     serializer_class = BusInfosSerializers
