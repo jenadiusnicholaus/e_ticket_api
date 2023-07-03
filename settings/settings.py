@@ -110,16 +110,29 @@ REST_FRAMEWORK = {
 #     }
 # }
 
+# live db
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'et_db',
-        'USER': 'postgres',
-        'PASSWORD': 'root',
+        'USER': 'etdbadmin',
+        'PASSWORD': 'et-p-123@!',
         'HOST': 'localhost',
         'PORT': '5432',
     }
 }
+# local db
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'et_db',
+#         'USER': 'postgres',
+#         'PASSWORD': 'root',
+#         'HOST': 'localhost',
+#         'PORT': '5432',
+#     }
+# }
 
 SITE_ID = 1
 
