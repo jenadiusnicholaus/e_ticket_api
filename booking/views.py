@@ -1,5 +1,5 @@
 from rest_framework import viewsets
-from . serializers import *
+from .serializers import *
 from .models import BusInfosTable
 from rest_framework.response import Response
 from rest_framework import viewsets, status
@@ -12,9 +12,8 @@ class BookingStateView(viewsets.ModelViewSet):
     permission_classes = []
 
     def list(self, request, *args, **kwargs):
-
         queryset = self.filter_queryset(self.get_queryset())
-        _booking_id = request.query_params.get('booking_id', None)
+        _booking_id = request.query_params.get("booking_id", None)
 
         try:
             q = BookingStateTable.objects.get(booking_id=_booking_id)
@@ -22,32 +21,29 @@ class BookingStateView(viewsets.ModelViewSet):
 
             response_obj = {
                 "success": True,
-                'status_code': status.HTTP_200_OK,
+                "status_code": status.HTTP_200_OK,
                 "message": "Found",
-                "data": {
-                    'booking_state':  serializer.data
-                }
+                "data": {"booking_state": serializer.data},
             }
             return Response(data=response_obj)
         except:
-
             response_obj = {
                 "success": False,
-                'status_code': status.HTTP_404_NOT_FOUND,
+                "status_code": status.HTTP_404_NOT_FOUND,
                 "message": "Not Found",
-
             }
             return Response(data=response_obj)
 
     def put(self, request, *args, **kwargs):
+        _booking_id = request.query_params.get("booking_id")
 
-        booking_id = request.query_params.get('booking_id')
+        _state = request.query_params.get("state")
 
-        _state = request.query_params.get('state')
-
-        instance = self.get_queryset().get(booking__id=booking_id,)
+        instance = self.get_queryset().get(
+            booking_id=_booking_id,
+        )
         data = {
-            'state': _state,
+            "state": _state,
         }
         serializer = self.get_serializer(instance, data=data, partial=True)
         serializer.is_valid(raise_exception=True)
@@ -57,22 +53,19 @@ class BookingStateView(viewsets.ModelViewSet):
                 "success": True,
                 "status": status.HTTP_200_OK,
                 "message": "Record updated successfully",
-                "data": {
-                    'state': serializer.data
-                }
+                "data": {"state": serializer.data},
             }
             return Response(response_obj)
         else:
             response_obj = {
                 "success": False,
                 "status": status.HTTP_400_BAD_REQUEST,
-                "message": "Failed to update"
+                "message": "Failed to update",
             }
             Response(response_obj)
 
 
 class RouteOriginView(viewsets.ModelViewSet):
-
     queryset = RouteOriginTable.objects.all()
     serializer_class = RouteOriginSerializers
 
@@ -82,25 +75,19 @@ class RouteOriginView(viewsets.ModelViewSet):
         serializer = self.get_serializer(queryset, many=True)
 
         if queryset.exists():
-
             response_obj = {
                 "success": True,
-                'status_code': status.HTTP_200_OK,
+                "status_code": status.HTTP_200_OK,
                 "message": "Found",
-                "data": {
-                    'buses': serializer.data
-                }
+                "data": {"buses": serializer.data},
             }
             return Response(data=response_obj)
         else:
-
             response_obj = {
                 "success": False,
-                'status_code': status.HTTP_404_NOT_FOUND,
+                "status_code": status.HTTP_404_NOT_FOUND,
                 "message": "Not Found",
-                "data": {
-                    'errors_massage': serializer.data
-                }
+                "data": {"errors_massage": serializer.data},
             }
             return Response(data=response_obj)
 
@@ -115,25 +102,19 @@ class RouteDestinationView(viewsets.ModelViewSet):
         serializer = self.get_serializer(queryset, many=True)
 
         if queryset.exists():
-
             response_obj = {
                 "success": True,
-                'status_code': status.HTTP_200_OK,
+                "status_code": status.HTTP_200_OK,
                 "message": "Found",
-                "data": {
-                    'buses': serializer.data
-                }
+                "data": {"buses": serializer.data},
             }
             return Response(data=response_obj)
         else:
-
             response_obj = {
                 "success": False,
-                'status_code': status.HTTP_404_NOT_FOUND,
+                "status_code": status.HTTP_404_NOT_FOUND,
                 "message": "Not Found",
-                "data": {
-                    'errors_massage': serializer.data
-                }
+                "data": {"errors_massage": serializer.data},
             }
             return Response(data=response_obj)
 
@@ -145,41 +126,35 @@ class BusView(viewsets.ModelViewSet):
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
 
-        _route_origin_id = request.query_params.get('route_origin', None)
-        _route_destination_id = request.query_params.get(
-            'route_destination', None)
-        _route_destination_id = request.query_params.get(
-            'route_destination', None)
+        _route_origin_id = request.query_params.get("route_origin", None)
+        _route_destination_id = request.query_params.get("route_destination", None)
+        _route_destination_id = request.query_params.get("route_destination", None)
 
-        _departure_date = request.query_params.get(
-            'departure_date', None)
+        _departure_date = request.query_params.get("departure_date", None)
 
         if _route_origin_id and _route_origin_id:
             queryset = queryset.filter(
-                route_origin=_route_origin_id, route_destination=_route_destination_id, departure_date=_departure_date)
+                route_origin=_route_origin_id,
+                route_destination=_route_destination_id,
+                departure_date=_departure_date,
+            )
 
         serializer = self.get_serializer(queryset, many=True)
 
         if queryset.exists():
-
             response_obj = {
                 "success": True,
-                'status_code': status.HTTP_200_OK,
+                "status_code": status.HTTP_200_OK,
                 "message": "Found",
-                "data": {
-                    'buses': serializer.data
-                }
+                "data": {"buses": serializer.data},
             }
             return Response(data=response_obj)
         else:
-
             response_obj = {
                 "success": False,
-                'status_code': status.HTTP_404_NOT_FOUND,
+                "status_code": status.HTTP_404_NOT_FOUND,
                 "message": "Not Found",
-                "data": {
-                    'errors_massage': serializer.data
-                }
+                "data": {"errors_massage": serializer.data},
             }
             return Response(data=response_obj)
 
@@ -193,7 +168,7 @@ class SeatsView(viewsets.ModelViewSet):
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
 
-        _bus_id = request.query_params.get('bus_id', None)
+        _bus_id = request.query_params.get("bus_id", None)
 
         if _bus_id:
             queryset = queryset.filter(bus=_bus_id)
@@ -201,38 +176,33 @@ class SeatsView(viewsets.ModelViewSet):
         serializer = self.get_serializer(queryset, many=True)
 
         if queryset.exists():
-
             response_obj = {
                 "success": True,
-                'status_code': status.HTTP_200_OK,
+                "status_code": status.HTTP_200_OK,
                 "message": "Found",
-                "data": {
-                    'seats': serializer.data
-                }
+                "data": {"seats": serializer.data},
             }
             return Response(data=response_obj)
         else:
-
             response_obj = {
                 "success": False,
-                'status_code': status.HTTP_404_NOT_FOUND,
+                "status_code": status.HTTP_404_NOT_FOUND,
                 "message": "Not Found",
-                "data": {
-                    'error_messages': serializer.data
-                }
+                "data": {"error_messages": serializer.data},
             }
             return Response(data=response_obj)
 
     def put(self, request, *args, **kwargs):
+        bus_id = request.query_params.get("bus_id")
 
-        bus_id = request.query_params.get('bus_id')
-
-        _seat_id = request.query_params.get('seat_id')
+        _seat_id = request.query_params.get("seat_id")
 
         instance = self.get_queryset().get(
-            bus__id=bus_id, id=_seat_id,)
+            bus__id=bus_id,
+            id=_seat_id,
+        )
         data = {
-            'status': 1,
+            "status": 1,
         }
         serializer = self.get_serializer(instance, data=data, partial=True)
         serializer.is_valid(raise_exception=True)
@@ -242,22 +212,19 @@ class SeatsView(viewsets.ModelViewSet):
                 "success": True,
                 "status": status.HTTP_200_OK,
                 "message": "Record updated successfully",
-                "data": {
-                    'selected_seat_infos': serializer.data
-                }
+                "data": {"selected_seat_infos": serializer.data},
             }
             return Response(response_obj)
         else:
             response_obj = {
                 "success": False,
                 "status": status.HTTP_400_BAD_REQUEST,
-                "message": "Failed to update"
+                "message": "Failed to update",
             }
             Response(response_obj)
 
 
 class GetBookingInfos(viewsets.ModelViewSet):
-
     queryset = BookingTable.objects.all()
     serializer_class = GetBookingSerializers
     authentication_classes = []
@@ -266,7 +233,7 @@ class GetBookingInfos(viewsets.ModelViewSet):
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
 
-        _booking_id = request.query_params.get('booking_id', None)
+        _booking_id = request.query_params.get("booking_id", None)
 
         if _booking_id:
             queryset = queryset.filter(id=_booking_id)
@@ -274,31 +241,24 @@ class GetBookingInfos(viewsets.ModelViewSet):
         serializer = self.get_serializer(queryset, many=True)
 
         if queryset.exists():
-
             response_obj = {
                 "success": True,
-                'status_code': status.HTTP_200_OK,
+                "status_code": status.HTTP_200_OK,
                 "message": "Found",
-                "data": {
-                    'booking_info': serializer.data
-                }
+                "data": {"booking_info": serializer.data},
             }
             return Response(data=response_obj)
         else:
-
             response_obj = {
                 "success": False,
-                'status_code': status.HTTP_404_NOT_FOUND,
+                "status_code": status.HTTP_404_NOT_FOUND,
                 "message": "Not Found",
-                "data": {
-                    'message': serializer.data
-                }
+                "data": {"message": serializer.data},
             }
             return Response(data=response_obj)
 
 
 class TicketsView(viewsets.ModelViewSet):
-
     queryset = BookingTable.objects.all()
     serializer_class = BookingSerializers
     authentication_classes = []
@@ -307,7 +267,7 @@ class TicketsView(viewsets.ModelViewSet):
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
 
-        _booking_id = request.query_params.get('booking_id', None)
+        _booking_id = request.query_params.get("booking_id", None)
 
         if _booking_id:
             queryset = queryset.filter(id=_booking_id)
@@ -315,49 +275,43 @@ class TicketsView(viewsets.ModelViewSet):
         serializer = self.get_serializer(queryset, many=True)
 
         if queryset.exists():
-
             response_obj = {
                 "success": True,
-                'status_code': status.HTTP_200_OK,
+                "status_code": status.HTTP_200_OK,
                 "message": "Found",
-                'data': {
-                    'booking_infos': serializer.data
-                }
+                "data": {"booking_infos": serializer.data},
             }
             return Response(data=response_obj)
         else:
-
             response_obj = {
                 "success": False,
-                'status_code': status.HTTP_404_NOT_FOUND,
+                "status_code": status.HTTP_404_NOT_FOUND,
                 "message": "Not Found",
-                'data': {
-                    'booking_infos': serializer.data
-                }
+                "data": {"booking_infos": serializer.data},
             }
             return Response(data=response_obj)
 
     def create(self, request, *args, **kwargs):
-        booked_by = request.data.get('full_name')
-        phone_numner = request.data.get('phone_number')
-        email_address = request.data.get('email_address')
-        amount_paid = request.data.get('amount_paid')
-        bus_id = request.data.get('bus_id')
-        seat_id = request.data.get('seat_id')
-        pick_up_point = request.data.get('pickup_point_id')
-        drop_point = request.data.get('drop_point_id')
-        safari_day = request.data.get('safari_day')
+        booked_by = request.data.get("full_name")
+        phone_numner = request.data.get("phone_number")
+        email_address = request.data.get("email_address")
+        amount_paid = request.data.get("amount_paid")
+        bus_id = request.data.get("bus_id")
+        seat_id = request.data.get("seat_id")
+        pick_up_point = request.data.get("pickup_point_id")
+        drop_point = request.data.get("drop_point_id")
+        safari_day = request.data.get("safari_day")
 
         data = {
-            'booked_by': booked_by,
-            'phone_number': phone_numner,
-            'email_address': email_address,
-            'amount_paid': amount_paid,
-            'bus': bus_id,
-            'seat': seat_id,
-            'pick_up': pick_up_point,
-            'drop_point': drop_point,
-            'safari_day': safari_day
+            "booked_by": booked_by,
+            "phone_number": phone_numner,
+            "email_address": email_address,
+            "amount_paid": amount_paid,
+            "bus": bus_id,
+            "seat": seat_id,
+            "pick_up": pick_up_point,
+            "drop_point": drop_point,
+            "safari_day": safari_day,
         }
         serializer = self.get_serializer(data=data)
         serializer.is_valid(raise_exception=True)
@@ -367,16 +321,13 @@ class TicketsView(viewsets.ModelViewSet):
             "success": True,
             "status": status.HTTP_200_OK,
             "message": "Booking is made successfully",
-            'headers': headers,
-            "data": {
-                'booking_info': serializer.data
-            }
+            "headers": headers,
+            "data": {"booking_info": serializer.data},
         }
         return Response(response_obj)
 
 
 class PickUpPointsView(viewsets.ModelViewSet):
-
     queryset = PickUpsTable.objects.all()
     serializer_class = PickUpPointsSerializers
     authentication_classes = []
@@ -385,7 +336,7 @@ class PickUpPointsView(viewsets.ModelViewSet):
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
 
-        _pickup_point_id = request.query_params.get('pickup_point_id', None)
+        _pickup_point_id = request.query_params.get("pickup_point_id", None)
 
         if _pickup_point_id:
             queryset = queryset.filter(id=_pickup_point_id)
@@ -393,31 +344,24 @@ class PickUpPointsView(viewsets.ModelViewSet):
         serializer = self.get_serializer(queryset, many=True)
 
         if queryset.exists():
-
             response_obj = {
                 "success": True,
-                'status_code': status.HTTP_200_OK,
+                "status_code": status.HTTP_200_OK,
                 "message": "Found",
-                "data": {
-                    'drop_points': serializer.data
-                }
+                "data": {"drop_points": serializer.data},
             }
             return Response(data=response_obj)
         else:
-
             response_obj = {
                 "success": False,
-                'status_code': status.HTTP_404_NOT_FOUND,
+                "status_code": status.HTTP_404_NOT_FOUND,
                 "message": "Not Found",
-                "data": {
-                    'error_message': serializer.data
-                }
+                "data": {"error_message": serializer.data},
             }
             return Response(data=response_obj)
 
 
 class DropPointsView(viewsets.ModelViewSet):
-
     queryset = DropsTable.objects.all()
     serializer_class = DropPointsSerializers
     authentication_classes = []
@@ -426,7 +370,7 @@ class DropPointsView(viewsets.ModelViewSet):
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
 
-        _pickup_point_id = request.query_params.get('drop_point_id', None)
+        _pickup_point_id = request.query_params.get("drop_point_id", None)
 
         if _pickup_point_id:
             queryset = queryset.filter(id=_pickup_point_id)
@@ -434,24 +378,18 @@ class DropPointsView(viewsets.ModelViewSet):
         serializer = self.get_serializer(queryset, many=True)
 
         if queryset.exists():
-
             response_obj = {
                 "success": True,
-                'status_code': status.HTTP_200_OK,
+                "status_code": status.HTTP_200_OK,
                 "message": "Found",
-                "data": {
-                    'pick_up_points': serializer.data
-                }
+                "data": {"pick_up_points": serializer.data},
             }
             return Response(data=response_obj)
         else:
-
             response_obj = {
                 "success": False,
-                'status_code': status.HTTP_404_NOT_FOUND,
+                "status_code": status.HTTP_404_NOT_FOUND,
                 "message": "Not Found",
-                "data": {
-                    'error_message': serializer.data
-                }
+                "data": {"error_message": serializer.data},
             }
             return Response(data=response_obj)
