@@ -104,7 +104,8 @@ class BookingStateTable(models.Model):
 
     booking = models.OneToOneField(BookingTable, on_delete=models.CASCADE)
 
-    state = models.CharField(choices=BOOKING_STATE, default=0, max_length=10)
+    state = models.CharField(choices=BOOKING_STATE,
+                             default="BOOKED", max_length=10, null=True)
 
     class Meta:
         verbose_name = '1. Booking state'
