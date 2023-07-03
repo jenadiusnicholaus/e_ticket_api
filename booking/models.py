@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 import os
+from django.db.models.signals import post_save
 
 
 class RouteOriginTable(models.Model):
@@ -101,7 +102,7 @@ class BookingStateTable(models.Model):
         ('CANCELED', 'CANCELLED')
     )
 
-    booking = models.ForeignKey(BookingTable, on_delete=models.CASCADE)
+    booking = models.OneToOneField(BookingTable, on_delete=models.CASCADE)
 
     state = models.CharField(choices=BOOKING_STATE, default=0)
 
@@ -133,3 +134,13 @@ class DropsTable(models.Model):
 
     def __str__(self):
         return f'{self.name}'
+
+
+def userprofile_receiver(sender, instance, created, *args, **kwargs):
+    if created:
+        userprofile = BookingStateTable.objects.create(booking=instance)
+    if not created and instance is None:
+        userprofile = BookingStateTable.objects.create(booking=instance)
+
+
+post_save.connect(userprofile_receiver, sender=BookingTable)
