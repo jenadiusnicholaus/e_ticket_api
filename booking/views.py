@@ -79,7 +79,7 @@ class RouteOriginView(viewsets.ModelViewSet):
                 "success": True,
                 "status_code": status.HTTP_200_OK,
                 "message": "Found",
-                "data": {"buses": serializer.data},
+                "data": {"routes": serializer.data},
             }
             return Response(data=response_obj)
         else:
@@ -106,7 +106,7 @@ class RouteDestinationView(viewsets.ModelViewSet):
                 "success": True,
                 "status_code": status.HTTP_200_OK,
                 "message": "Found",
-                "data": {"buses": serializer.data},
+                "data": {"routes": serializer.data},
             }
             return Response(data=response_obj)
         else:
