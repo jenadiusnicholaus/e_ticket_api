@@ -416,7 +416,7 @@ class GetoriginRouteDestinationView(viewsets.ModelViewSet):
                 "success": True,
                 "status_code": status.HTTP_200_OK,
                 "message": "Found",
-                "data": {"pick_up_points": serializer.data},
+                "data": {"origin_destion_routes": serializer.data},
             }
             return Response(data=response_obj)
         else:
