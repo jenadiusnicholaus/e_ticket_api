@@ -26,6 +26,18 @@ class RouteDestinationTable(models.Model):
         return f"{self.name}"
 
 
+class OriginDestinationRoutesTabale(models.Model):
+    origin = models.ForeignKey(RouteOriginTable, on_delete=models.CASCADE)
+    routes = models.ManyToManyField(RouteDestinationTable)
+
+    class Meta:
+        verbose_name = "3. Origin Route Destinations routes"
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return f"{self.origin.name}"
+
+
 class BusInfosTable(models.Model):
     BUS_TYPE = (("luxury", "LUXURY"), ("semi-luxury", "SEMI-LUXURY"))
 
@@ -57,7 +69,7 @@ class BusInfosTable(models.Model):
     bus_type = models.CharField(max_length=200, null=True, choices=BUS_TYPE)
 
     class Meta:
-        verbose_name = "3. Bus infos"
+        verbose_name = "4. Bus infos"
         verbose_name_plural = verbose_name
 
     def __str__(self):
@@ -71,7 +83,7 @@ class SeatsTable(models.Model):
     bus = models.ForeignKey(BusInfosTable, on_delete=models.CASCADE)
 
     class Meta:
-        verbose_name = "4. Seats"
+        verbose_name = "5. Seats"
         verbose_name_plural = verbose_name
 
     def __str__(self):
@@ -90,7 +102,7 @@ class BookingTable(models.Model):
     drop_point = models.ForeignKey("DropsTable", on_delete=models.CASCADE, null=True)
 
     class Meta:
-        verbose_name = "4. Tickets"
+        verbose_name = "6. Tickets"
         verbose_name_plural = verbose_name
 
     def __str__(self):
@@ -109,7 +121,7 @@ class BookingStateTable(models.Model):
     state = models.CharField(choices=BOOKING_STATE, default="BOOKED", max_length=10)
 
     class Meta:
-        verbose_name = "1. Booking state"
+        verbose_name = "7. Booking state"
         verbose_name_plural = verbose_name
 
     def __str__(self):
@@ -120,7 +132,7 @@ class PickUpsTable(models.Model):
     name = models.CharField(max_length=50, null=True)
 
     class Meta:
-        verbose_name = "5. Pick Up points"
+        verbose_name = "8. Pick Up points"
         verbose_name_plural = verbose_name
 
     def __str__(self):
@@ -131,7 +143,7 @@ class DropsTable(models.Model):
     name = models.CharField(max_length=50, null=True)
 
     class Meta:
-        verbose_name = "6. Drop points "
+        verbose_name = "9. Drop points "
         verbose_name_plural = verbose_name
 
     def __str__(self):

@@ -393,3 +393,37 @@ class DropPointsView(viewsets.ModelViewSet):
                 "data": {"error_message": serializer.data},
             }
             return Response(data=response_obj)
+
+
+class GetoriginRouteDestinationView(viewsets.ModelViewSet):
+    queryset = OriginDestinationRoutesTabale.objects.all()
+    serializer_class = OriginDestinationRoutesTabaleSerializer
+    authentication_classes = []
+    permission_classes = []
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+
+        _origin_route_id = request.query_params.get("origin_route_id", None)
+
+        if _origin_route_id:
+            queryset = queryset.filter(id=_origin_route_id)
+
+        serializer = self.get_serializer(queryset, many=True)
+
+        if queryset.exists():
+            response_obj = {
+                "success": True,
+                "status_code": status.HTTP_200_OK,
+                "message": "Found",
+                "data": {"pick_up_points": serializer.data},
+            }
+            return Response(data=response_obj)
+        else:
+            response_obj = {
+                "success": False,
+                "status_code": status.HTTP_404_NOT_FOUND,
+                "message": "Not Found",
+                "data": {"error_message": serializer.data},
+            }
+            return Response(data=response_obj)

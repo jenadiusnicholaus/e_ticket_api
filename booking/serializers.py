@@ -3,17 +3,15 @@ from .models import *
 
 
 class RouteOriginSerializers(serializers.ModelSerializer):
-
     class Meta:
         model = RouteOriginTable
-        fields = '__all__'
+        fields = "__all__"
 
 
 class RouteDestinationSerializers(serializers.ModelSerializer):
-
     class Meta:
         model = RouteOriginTable
-        fields = '__all__'
+        fields = "__all__"
 
 
 class BusInfosSerializers(serializers.ModelSerializer):
@@ -22,7 +20,7 @@ class BusInfosSerializers(serializers.ModelSerializer):
 
     class Meta:
         model = BusInfosTable
-        fields = '__all__'
+        fields = "__all__"
 
 
 class SeatsSerializers(serializers.ModelSerializer):
@@ -30,14 +28,13 @@ class SeatsSerializers(serializers.ModelSerializer):
 
     class Meta:
         model = SeatsTable
-        fields = '__all__'
+        fields = "__all__"
 
 
 class BookingSerializers(serializers.ModelSerializer):
-
     class Meta:
         model = BookingTable
-        fields = '__all__'
+        fields = "__all__"
 
 
 class GetBookingSerializers(serializers.ModelSerializer):
@@ -46,21 +43,19 @@ class GetBookingSerializers(serializers.ModelSerializer):
 
     class Meta:
         model = BookingTable
-        fields = '__all__'
+        fields = "__all__"
 
 
 class PickUpPointsSerializers(serializers.ModelSerializer):
-
     class Meta:
         model = PickUpsTable
-        fields = '__all__'
+        fields = "__all__"
 
 
 class DropPointsSerializers(serializers.ModelSerializer):
-
     class Meta:
         model = DropsTable
-        fields = '__all__'
+        fields = "__all__"
 
 
 class BookingStateSerializers(serializers.ModelSerializer):
@@ -68,11 +63,19 @@ class BookingStateSerializers(serializers.ModelSerializer):
 
     class Meta:
         model = BookingStateTable
-        fields = '__all__'
+        fields = "__all__"
 
 
 class PostBookingStateSerializers(serializers.ModelSerializer):
-
     class Meta:
         model = BookingStateTable
-        fields = '__all__'
+        fields = "__all__"
+
+
+class OriginDestinationRoutesTabaleSerializer(serializers.ModelSerializer):
+    origin = RouteOriginSerializers()
+    routes = RouteDestinationSerializers(many=True, read_only=True)
+
+    class Meta:
+        model = OriginDestinationRoutesTabale
+        fields = "__all__"
